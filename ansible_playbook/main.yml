@@ -1,0 +1,20 @@
+---
+- name: Add Win VM to domain 
+  hosts: win
+  tasks:
+    - name: Join VM to domain
+      win_domain_membership:
+        dns_domain_name: SLBPOC.com  # Corrected the domain name format
+        hostname: t5-win-1
+        domain_admin_user: Sac-domjoin
+        domain_admin_password: Lumi@389#
+        # domain_ou_path: "OU=Windows,OU=Servers,DC=ansible,DC=vagrant"
+        state: domain   
+      register: domain_output
+
+    - name: Reboot Server
+      win_shell: shutdown /r /f /t 5
+
+    - name: Wait for reboot to complete
+      pause: 
+        minutes: 2
