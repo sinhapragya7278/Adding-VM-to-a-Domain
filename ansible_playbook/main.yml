@@ -7,7 +7,7 @@
         dns_domain_name: SLBPOC.com  # Corrected the domain name format
         hostname: t5-win-1
         domain_admin_user: Sac-domjoin
-        domain_admin_password: Lumi@389#
+        domain_admin_password: #####
         # domain_ou_path: "OU=Windows,OU=Servers,DC=ansible,DC=vagrant"
         state: domain   
       register: domain_output
