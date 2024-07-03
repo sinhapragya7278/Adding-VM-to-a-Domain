@@ -1,0 +1,44 @@
+# Add Windows VM to Domain Playbook
+
+![YAML](https://img.shields.io/badge/language-YAML-blue.svg)
+![Ansible](https://img.shields.io/badge/automation-Ansible-red.svg)
+
+This Ansible playbook is designed to automate the process of adding a Windows VM to a domain, followed by a server reboot.
+
+## Playbook Details
+
+### Playbook: `add_vm_domain_win.yml`
+
+This playbook performs the following tasks:
+1. **Joins the Windows VM to the specified domain.**
+2. **Reboots the Windows VM to apply the changes.**
+3. **Pauses to wait for the reboot to complete.**
+
+### Technologies Used
+
+- **YAML:** Used for defining the structure of the Ansible playbook.
+- **Ansible:** Automation tool to manage and configure systems.
+
+### Playbook Content
+
+```yaml
+---
+- name: Add Windows VM to domain 
+  hosts: win
+  tasks:
+    - name: Join VM to domain
+      win_domain_membership:
+        dns_domain_name: SLBPOC.com  # Corrected the domain name format
+        hostname: t5-win-1
+        domain_admin_user: Sac-domjoin
+        domain_admin_password: "#####"
+        # domain_ou_path: "OU=Windows,OU=Servers,DC=ansible,DC=vagrant"
+        state: domain   
+      register: domain_output
+
+    - name: Reboot Server
+      win_shell: shutdown /r /f /t 5
+
+    - name: Wait for reboot to complete
+      pause: 
+        minutes: 2
